@@ -41,7 +41,7 @@ public class BetterEnergy {
 		
 		public static CreativeTabs tabBetterEnergy = new CreativeTabs("BetterEnergyTab") {
 			
-			//Hell world String
+			
 			
 			@Override
 			@SideOnly(Side.CLIENT)

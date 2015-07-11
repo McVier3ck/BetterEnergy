@@ -1,25 +1,29 @@
 package tk.McViereck.BetterEnergy.Container;
 
-import tk.McViereck.BetterEnergy.TileEntity.Machine.TileEntityEnergyStorage;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
+import tk.McViereck.BetterEnergy.TileEntity.Machine.TileEntityEnergyStorage;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class EnergyStorageContainer extends Container{
 
-	private TileEntityEnergyStorage entity;
+	private TileEntityEnergyStorage tileEntity;
+	private int energy;
 	
-	
-	public EnergyStorageContainer(InventoryPlayer inv, TileEntityEnergyStorage entity) {
-		this.entity = entity;
+	public EnergyStorageContainer(InventoryPlayer inv, TileEntityEnergyStorage tileEntity) {
+		this.tileEntity = tileEntity;
 		
-		addSlotToContainer(new Slot(entity, 0, 80, 6));
-		addSlotToContainer(new Slot(entity, 1, 25, 61));
-		addSlotToContainer(new Slot(entity, 2, 62, 61));
-		addSlotToContainer(new Slot(entity, 3, 98, 61));
-		addSlotToContainer(new Slot(entity, 4, 134, 61));
+		addSlotToContainer(new Slot(tileEntity, 0, 80, 6));
+		addSlotToContainer(new Slot(tileEntity, 1, 25, 61));
+		addSlotToContainer(new Slot(tileEntity, 2, 62, 61));
+		addSlotToContainer(new Slot(tileEntity, 3, 98, 61));
+		addSlotToContainer(new Slot(tileEntity, 4, 134, 61));
 		
 
 		
@@ -35,6 +39,47 @@ public class EnergyStorageContainer extends Container{
 		
 	}
 	
+	
+	@Override
+	public void addCraftingToCrafters(ICrafting icrafting) {
+		super.addCraftingToCrafters(icrafting);
+		icrafting.sendProgressBarUpdate(this, 0, this.tileEntity.getEnergyStored(ForgeDirection.SOUTH));
+		
+	}
+	
+	
+	@Override
+	public void detectAndSendChanges() {
+		super.detectAndSendChanges();
+
+        for (int i = 0; i < this.crafters.size(); ++i)
+        {
+            ICrafting icrafting = (ICrafting)this.crafters.get(i);
+            
+            if (this.energy != this.tileEntity.getEnergyStored(ForgeDirection.SOUTH))
+            {
+            	icrafting.sendProgressBarUpdate(this, 0, this.tileEntity.getEnergyStored(ForgeDirection.SOUTH));
+            }
+
+            
+        }
+
+        this.energy = this.tileEntity.getEnergyStored(ForgeDirection.SOUTH);
+
+	}
+	
+	 @SideOnly(Side.CLIENT)
+	    public void updateProgressBar(int id, int value)
+	    {
+	    
+	        if (id == 0)
+	        {
+	        	this.tileEntity.energyStorage.setEnergyStored(value);
+	        }
+
+	      
+	    }
+	
 	@Override
     public ItemStack transferStackInSlot(EntityPlayer player, int slot) {
             ItemStack stack = null;
@@ -46,13 +91,13 @@ public class EnergyStorageContainer extends Container{
                     stack = stackInSlot.copy();
 
                     //merges the item into player inventory since its in the tileEntity
-                    if (slot < entity.getSizeInventory()) {
-                            if (!this.mergeItemStack(stackInSlot, entity.getSizeInventory(), 36+entity.getSizeInventory(), true)) {
+                    if (slot < tileEntity.getSizeInventory()) {
+                            if (!this.mergeItemStack(stackInSlot, tileEntity.getSizeInventory(), 36+tileEntity.getSizeInventory(), true)) {
                                     return null;
                             }
                     }
                     //places it into the tileEntity is possible since its in the player inventory
-                    else if (!this.mergeItemStack(stackInSlot, 0, entity.getSizeInventory(), false)) {
+                    else if (!this.mergeItemStack(stackInSlot, 0, tileEntity.getSizeInventory(), false)) {
                             return null;
                     }
 
@@ -70,17 +115,12 @@ public class EnergyStorageContainer extends Container{
             return stack;
     }
 
-	@Override
-	public void detectAndSendChanges() {
-	super.detectAndSendChanges();
 	
-		
-	}
 	
 	
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
 		
-		return entity.isUseableByPlayer(player);
+		return tileEntity.isUseableByPlayer(player);
 	}
 }

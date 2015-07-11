@@ -18,8 +18,6 @@ public class GuiEnergyStorage extends GuiContainer{
 	private final ResourceLocation res = new ResourceLocation("betterenergy:/textures/gui/EnergyStorage.png");
 	private TileEntityEnergyStorage entity;
 	
-	int max = 1000;
-	int current = 100;
 	
 	public GuiEnergyStorage(InventoryPlayer inv, TileEntityEnergyStorage entity) {
 		super(new EnergyStorageContainer(inv, entity));
@@ -32,8 +30,11 @@ public class GuiEnergyStorage extends GuiContainer{
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
 
+		int max = entity.getMaxEnergyStored(ForgeDirection.SOUTH);
+		int current = entity.getEnergyStored(ForgeDirection.SOUTH);
+		
 		fontRendererObj.drawString(current + " / " + max + " RF", (int) (88-(Math.log10(current)+2*18)), 48, 4210752);
-		//entity.powerHandler.setEnergyStored(entity.powerHandler.getEnergyStored());
+		
 	}
 	
 	
@@ -44,12 +45,14 @@ public class GuiEnergyStorage extends GuiContainer{
 		Minecraft.getMinecraft().getTextureManager().bindTexture(res);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 		
-		drawTexturedModalRect(guiLeft+24, guiTop+32, 0, 166,(int) ((int) current/(max/100)*1.26), 14);
 		
-		System.out.println(entity.powerHandler.getEnergyStored() + " " + 
-		entity.powerHandler.getMaxEnergyStored() + " " + 
-		entity.powerHandler.getMaxExtract() + " " + 
-		entity.powerHandler.getMaxReceive() + " ");
+		
+ 		int max = entity.getMaxEnergyStored(ForgeDirection.SOUTH);
+		int current = entity.getEnergyStored(ForgeDirection.SOUTH);
+		
+		drawTexturedModalRect(guiLeft+25, guiTop+33, 0, 168, (int) (1.24*(100/max*current)), 12);
+		
+		
 	}
 	
 }

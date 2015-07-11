@@ -1,7 +1,5 @@
 package tk.McViereck.BetterEnergy.TileEntity.Machine;
 
-import java.util.ArrayList;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -11,16 +9,11 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
-import tk.McViereck.BetterEnergy.Block.BlockRegistry;
 import tk.McViereck.BetterEnergy.Block.EnergyInfuserBlock;
-import tk.McViereck.BetterEnergy.Container.EnergyInfuserContainer;
 import tk.McViereck.BetterEnergy.Crafting.EnergyInfuserCrafting;
-import tk.McViereck.BetterEnergy.TileEntity.TileEntityRegistry;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyReceiver;
-import cofh.api.tileentity.ISidedTexture;
 
 public class TileEntityEnergyInfuser extends TileEntity implements ISidedInventory, IEnergyReceiver{
 

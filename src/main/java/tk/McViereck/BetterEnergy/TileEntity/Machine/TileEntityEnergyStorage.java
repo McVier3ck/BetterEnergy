@@ -5,17 +5,17 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.EnergyStorage;
+import cofh.api.energy.IEnergyContainerItem;
 import cofh.api.energy.IEnergyHandler;
-import cofh.api.energy.IEnergyProvider;
 import cofh.api.energy.IEnergyReceiver;
-import cofh.lib.util.helpers.BlockHelper;
-import cofh.lib.util.helpers.EnergyHelper;
-import cofh.lib.util.helpers.ServerHelper;
 
-public class TileEntityEnergyStorage extends TileEntity implements ISidedInventory, IEnergyProvider{
+public class TileEntityEnergyStorage extends TileEntity implements ISidedInventory, IEnergyHandler{
 
 	private ItemStack[] slots = new ItemStack[5];
 	private String customeName = "Energy Storage";
@@ -23,71 +23,75 @@ public class TileEntityEnergyStorage extends TileEntity implements ISidedInvento
 	  public int energySend;
 	  boolean cached = false;
 	
-	  public EnergyStorage powerHandler;
 	  IEnergyReceiver[] adjacentHandlers = new IEnergyReceiver[6];
+	  public EnergyStorage energyStorage = new EnergyStorage(1000000, 2048, 2048);
 	
 	public TileEntityEnergyStorage(){
-		this.powerHandler = new EnergyStorage(100000, 2500);
+		
 	}
 	
 	
-	  protected void transferEnergy(int paramInt)
-	  {
-	    
-	    if (this.adjacentHandlers[paramInt] == null) {
-	      return;
-	    }
-	    this.powerHandler.modifyEnergyStored(-this.adjacentHandlers[paramInt].receiveEnergy(ForgeDirection.VALID_DIRECTIONS[(paramInt ^ 0x1)], 
-	      Math.min(this.energySend, this.powerHandler
-	      .getEnergyStored()), false));
-	  }
+	@Override
+	public void updateEntity() {
+		if(slots[0] != null ) {
+			if(slots[0].getItem() instanceof IEnergyContainerItem) {
+				IEnergyContainerItem energyitem = (IEnergyContainerItem) slots[1].getItem();
+				if(energyStorage.getEnergyStored() < energyStorage.getMaxEnergyStored() && energyStorage.getEnergyStored() != 0) {
+					if(energyitem.getEnergyStored(slots[1]) < energyitem.getMaxEnergyStored(slots[1])) {
+						System.out.println("test");
+					}
+					
+				}
+			}
+		}
+	}
+	
+	
+	
+	
+	
+	@Override
+	public Packet getDescriptionPacket() {
+		
+		NBTTagCompound par1 = new NBTTagCompound();
+		
+		NBTTagList nbttaglist = new NBTTagList();
 
-	  protected void updateAdjacentHandlers()
-	  {
-	    if (ServerHelper.isClientWorld(this.worldObj)) {
-	      return;
-	    }
-	    for (int i = 0; i < 6; i++) {
-	      TileEntity localTileEntity = BlockHelper.getAdjacentTileEntity(this, i);
+        for (int i = 0; i < this.slots.length; ++i)
+        {
+            if (this.slots[i] != null)
+            {
+                NBTTagCompound nbttagcompound1 = new NBTTagCompound();
+                nbttagcompound1.setByte("Slot", (byte)i);
+                this.slots[i].writeToNBT(nbttagcompound1);
+                nbttaglist.appendTag(nbttagcompound1);
+            }
+        }
 
-	      if (EnergyHelper.isEnergyReceiverFromSide(localTileEntity, ForgeDirection.VALID_DIRECTIONS[(i ^ 0x1)]))
-	        this.adjacentHandlers[i] = ((IEnergyReceiver)localTileEntity);
-	      else {
-	        this.adjacentHandlers[i] = null;
-	      }
-	    }
-	    this.cached = true;
-	  }
+        par1.setTag("Items", nbttaglist);
 
-	  protected void updateAdjacentHandler(int paramInt1, int paramInt2, int paramInt3)
-	  {
-	    if (ServerHelper.isClientWorld(this.worldObj)) {
-	      return;
-	    }
-	    int i = BlockHelper.determineAdjacentSide(this, paramInt1, paramInt2, paramInt3);
-
-	    TileEntity localTileEntity = this.worldObj.getTileEntity(paramInt1, paramInt2, paramInt3);
-
-	    if (EnergyHelper.isEnergyReceiverFromSide(localTileEntity, ForgeDirection.VALID_DIRECTIONS[(i ^ 0x1)]))
-	      this.adjacentHandlers[i] = ((IEnergyReceiver)localTileEntity);
-	    else
-	      this.adjacentHandlers[i] = null;
-	  }
+        if (this.hasCustomInventoryName())
+        {
+            par1.setString("CustomName", customeName);
+        }
+        
+        this.energyStorage.writeToNBT(par1);
+		
+		
+		return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, par1);
+		
+	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	@Override
+	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+		readFromNBT(pkt.func_148857_g());
+	}
 	
 	
 	public void readFromNBT(NBTTagCompound par1)
     {
+		
+		
         super.readFromNBT(par1);
         NBTTagList nbttaglist = par1.getTagList("Items", 10);
         this.slots = new ItemStack[this.getSizeInventory()];
@@ -108,6 +112,7 @@ public class TileEntityEnergyStorage extends TileEntity implements ISidedInvento
                 this.slots[b0] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
             }
         }
+        this.energyStorage.readFromNBT(par1);
     }
 	
 	
@@ -135,16 +140,10 @@ public class TileEntityEnergyStorage extends TileEntity implements ISidedInvento
 	        {
 	            par1.setString("CustomName", customeName);
 	        }
+	        
+	        this.energyStorage.writeToNBT(par1);
 	    }
 	   
-	
-	
-	
-	
-	@Override
-	public void updateEntity() {
-		
-	}
 	
 	
 	@Override
@@ -260,27 +259,46 @@ public class TileEntityEnergyStorage extends TileEntity implements ISidedInvento
 		return false;
 	}
 
+
+
+
+
+
 	@Override
 	public boolean canConnectEnergy(ForgeDirection from) {
+		
 		return true;
 	}
 
 
+		@Override
+	  public int receiveEnergy(ForgeDirection paramForgeDirection, int paramInt, boolean paramBoolean)  {
+			
+	      return this.energyStorage.receiveEnergy(paramInt, paramBoolean);
+	  	  
+	  }
+
 	@Override
-	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
+	public int extractEnergy(ForgeDirection paramForgeDirection, int paramInt, boolean paramBoolean) {
 		
-		return powerHandler.extractEnergy(maxExtract, simulate);
-	}
+	      return this.energyStorage.extractEnergy(paramInt, paramBoolean);
+	    
+	  }
+
+
 
 	@Override
 	public int getEnergyStored(ForgeDirection from) {
 		
-		return powerHandler.getEnergyStored();
+		return energyStorage.getEnergyStored();
 	}
+
+
 
 	@Override
 	public int getMaxEnergyStored(ForgeDirection from) {
-		return powerHandler.getMaxEnergyStored();
+		
+		return energyStorage.getMaxEnergyStored();
 	}
 
 
