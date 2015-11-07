@@ -1,0 +1,24 @@
+[16:45:59] [main/INFO]: Setting user: Player467
+[16:46:02] [Client thread/INFO]: LWJGL Version: 2.9.1
+[16:46:14] [Client thread/INFO]: Reloading ResourceManager: Default, FMLFileResourcePack:Forge Mod Loader, FMLFileResourcePack:Minecraft Forge, FMLFileResourcePack:Not Enough Items, FMLFileResourcePack:MoreEnergy, FMLFileResourcePack:CoFH Core, FMLFileResourcePack:Thermal Dynamics, FMLFileResourcePack:Thermal Expansion, FMLFileResourcePack:Thermal Foundation
+[16:46:17] [Sound Library Loader/INFO]: Sound engine started
+[16:46:20] [Client thread/INFO]: Created: 16x16 textures/blocks-atlas
+[16:46:20] [Client thread/INFO]: Created: 16x16 textures/items-atlas
+[16:46:23] [Client thread/INFO]: Reloading ResourceManager: Default, FMLFileResourcePack:Forge Mod Loader, FMLFileResourcePack:Minecraft Forge, FMLFileResourcePack:Not Enough Items, FMLFileResourcePack:MoreEnergy, FMLFileResourcePack:CoFH Core, FMLFileResourcePack:Thermal Dynamics, FMLFileResourcePack:Thermal Expansion, FMLFileResourcePack:Thermal Foundation
+[16:46:23] [Client thread/INFO]: Created: 512x512 textures/blocks-atlas
+[16:46:23] [Client thread/INFO]: Created: 512x512 textures/items-atlas
+[16:46:24] [Sound Library Loader/INFO]: Sound engine started
+[16:46:29] [Server thread/INFO]: Starting integrated minecraft server version 1.7.10
+[16:46:29] [Server thread/INFO]: Generating keypair
+[16:46:29] [Server thread/INFO]: Preparing start region for level 0
+[16:46:29] [Server thread/INFO]: Changing view distance to 8, from 10
+[16:46:30] [Server thread/INFO]: Player467[local:E:96e7abaa] logged in with entity id 2 at (-781.5458275904496, 56.0, 40.78286304606702)
+[16:46:30] [Server thread/INFO]: Player467 joined the game
+[16:46:38] [Server thread/INFO]: Saving and pausing game...
+[16:46:38] [Server thread/INFO]: Saving chunks for level 'Copy of New World'/Overworld
+[16:46:38] [Server thread/INFO]: Saving chunks for level 'Copy of New World'/Nether
+[16:46:38] [Server thread/INFO]: Saving chunks for level 'Copy of New World'/The End
+[16:46:39] [Server thread/INFO]: Saving and pausing game...
+[16:46:39] [Server thread/INFO]: Saving chunks for level 'Copy of New World'/Overworld
+[16:46:39] [Server thread/INFO]: Saving chunks for level 'Copy of New World'/Nether
+[16:46:39] [Server thread/INFO]: Saving chunks for level 'Copy of New World'/The End

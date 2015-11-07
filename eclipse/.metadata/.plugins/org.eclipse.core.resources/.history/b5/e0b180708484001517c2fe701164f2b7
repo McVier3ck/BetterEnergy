@@ -1,0 +1,9 @@
+package tk.mcvier3ck.moreenergy.tileentity.machine;
+
+import cofh.api.energy.IEnergyReceiver;
+import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.tileentity.TileEntity;
+
+public class BasicTileEntityMachine extends TileEntity implements ISidedInventory, IEnergyReceiver{
+
+}

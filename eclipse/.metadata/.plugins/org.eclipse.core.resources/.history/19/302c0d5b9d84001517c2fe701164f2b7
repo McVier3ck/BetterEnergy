@@ -1,0 +1,136 @@
+package tk.mcvier3ck.moreenergy.tileentity.machine;
+
+import cofh.api.energy.EnergyStorage;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+import tk.mcvier3ck.moreenergy.block.EnergyInfuserBlock;
+import tk.mcvier3ck.moreenergy.crafting.EnergyInfuserCraftingRecipe;
+import tk.mcvier3ck.moreenergy.tileentity.TileEntityRegistry;
+
+public abstract class MachineEnergyInfuser extends BasicTileEntityMachine {
+
+	boolean cached = false;
+	public int tick = 0;
+	public int work = 0;
+	public int worktime = 20 * 6;
+
+	public MachineEnergyInfuser() {
+		slots = new ItemStack[5];
+		slotsOut = new int[] { 0 };
+		slotsIn = new int[] { 0, 1, 2, 3, 4 };
+		customeName = "Energy Storage";
+		
+		powerHandler = new EnergyStorage(30000, 10000, 0);
+		
+	}
+
+	public void work() {
+		if (worldObj.isRemote)
+			return;
+		if (slots[1] != null && slots[2] != null && slots[3] != null && slots[4] != null) {
+			if (EnergyInfuserCraftingRecipe.canCraft(slots)) {
+				if (powerHandler.getEnergyStored() >= EnergyInfuserCraftingRecipe.getEnergycost(slots)) {
+					tick++;
+					powerHandler.modifyEnergyStored(-EnergyInfuserCraftingRecipe.getEnergycost(slots) / 120);
+					work++;
+				} else {
+					reset();
+					return;
+				}
+
+			} else {
+				reset();
+				return;
+			}
+
+			if (tick >= worktime) {
+				reset();
+				EnergyInfuserCraftingRecipe.infuseditem(slots);
+				return;
+			}
+
+		} else {
+
+			reset();
+			return;
+		}
+		if (tick == 1) {
+			EnergyInfuserBlock.updateWork(true, worldObj, xCoord, yCoord, zCoord);
+		}
+
+		return;
+	}
+
+	public void reset() {
+		work = 0;
+		tick = 0;
+		EnergyInfuserBlock.updateWork(false, worldObj, xCoord, yCoord, zCoord);
+		markDirty();
+
+	}
+
+	@Override
+	public void markDirty() {
+		super.markDirty();
+
+	}
+
+	@Override
+	public void updateEntity() {
+		work();
+		super.updateEntity();
+		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+	}
+	
+	 String visitor1="none";
+     String visitor2="none";
+     String visitor3="none";
+     String visitor4="none";
+     String visitor5="none";
+     public void processActivate(EntityPlayer par5EntityPlayer, World world) {
+    	 System.out.println("1");
+             visitor5=visitor4;
+             visitor4=visitor3;
+             visitor3=visitor2;
+             visitor2=visitor1;
+             visitor1=par5EntityPlayer.getDisplayName();
+             
+             System.out.println("Visitors: " + visitor1 + ", " + visitor2 + ", " + visitor3 + ", " + visitor4 + ", " + visitor5);
+             world.notifyBlockChange(xCoord, yCoord, zCoord, TileEntityRegistry.EnergyInfuser);
+     }
+     
+     @Override
+     public void readFromNBT(NBTTagCompound nbt)
+ {
+     super.readFromNBT(nbt);
+     this.visitor1 = nbt.getString("visitor1");
+     this.visitor2 = nbt.getString("visitor2");
+     this.visitor3 = nbt.getString("visitor3");
+     this.visitor4 = nbt.getString("visitor4");
+     this.visitor5 = nbt.getString("visitor5");
+ }
+
+ @Override
+ public void writeToNBT(NBTTagCompound nbt)
+ {
+     super.writeToNBT(nbt);
+     nbt.setString("visitor1", visitor1);
+     nbt.setString("visitor2", visitor2);
+     nbt.setString("visitor3", visitor3);
+     nbt.setString("visitor4", visitor4);
+     nbt.setString("visitor5", visitor5);
+ }
+
+	
+	
+	public int getWork() {
+		return work;
+	}
+
+	public int getTick() {
+		return tick;
+	}
+	
+}

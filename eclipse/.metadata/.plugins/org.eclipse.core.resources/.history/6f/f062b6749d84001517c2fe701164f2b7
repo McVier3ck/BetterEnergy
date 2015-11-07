@@ -1,0 +1,102 @@
+package tk.mcvier3ck.moreenergy.tileentity.machine;
+
+import cofh.api.energy.EnergyStorage;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import tk.mcvier3ck.moreenergy.block.EnergyInfuserBlock;
+import tk.mcvier3ck.moreenergy.crafting.EnergyInfuserCraftingRecipe;
+
+public abstract class MachineEnergyInfuser extends BasicTileEntityMachine {
+
+	boolean cached = false;
+	public int tick = 0;
+	public int work = 0;
+	public int worktime = 20 * 6;
+
+	public MachineEnergyInfuser() {
+		slots = new ItemStack[5];
+		slotsOut = new int[] { 0 };
+		slotsIn = new int[] { 0, 1, 2, 3, 4 };
+		customeName = "Energy Storage";
+		
+		powerHandler = new EnergyStorage(30000, 10000, 0);
+		
+	}
+
+	public void work() {
+		if (worldObj.isRemote)
+			return;
+		if (slots[1] != null && slots[2] != null && slots[3] != null && slots[4] != null) {
+			if (EnergyInfuserCraftingRecipe.canCraft(slots)) {
+				if (powerHandler.getEnergyStored() >= EnergyInfuserCraftingRecipe.getEnergycost(slots)) {
+					tick++;
+					powerHandler.modifyEnergyStored(-EnergyInfuserCraftingRecipe.getEnergycost(slots) / 120);
+					work++;
+				} else {
+					reset();
+					return;
+				}
+
+			} else {
+				reset();
+				return;
+			}
+
+			if (tick >= worktime) {
+				reset();
+				EnergyInfuserCraftingRecipe.infuseditem(slots);
+				return;
+			}
+
+		} else {
+
+			reset();
+			return;
+		}
+		if (tick == 1) {
+			EnergyInfuserBlock.updateWork(true, worldObj, xCoord, yCoord, zCoord);
+		}
+
+		return;
+	}
+
+	public void reset() {
+		work = 0;
+		tick = 0;
+		EnergyInfuserBlock.updateWork(false, worldObj, xCoord, yCoord, zCoord);
+		markDirty();
+
+	}
+
+	@Override
+	public void markDirty() {
+		super.markDirty();
+
+	}
+
+	@Override
+	public void updateEntity() {
+		work();
+		super.updateEntity();
+		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+	}
+	
+
+	@Override
+ 	public void writeToNBT(NBTTagCompound nbt)
+	{
+		super.writeToNBT(nbt);
+     	nbt.setString("Test", "ABC");
+	}
+
+	
+	
+	public int getWork() {
+		return work;
+	}
+
+	public int getTick() {
+		return tick;
+	}
+	
+}

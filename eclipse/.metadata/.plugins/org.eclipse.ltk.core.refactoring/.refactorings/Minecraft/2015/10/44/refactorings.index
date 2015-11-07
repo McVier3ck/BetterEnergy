@@ -1,0 +1,41 @@
+1446078895106	Delete element
+1446079274704	Delete element
+1446079291457	Rename type 'BetterEnergyNEIConfig'
+1446079300656	Rename type 'BetterEnergyCrafting'
+1446079305151	Delete element
+1446079309258	Delete element
+1446079311375	Delete element
+1446082552099	Delete element
+1446082592824	Delete element
+1446082609150	Copy compilation unit
+1446082871023	Delete element
+1446082882250	Copy compilation unit
+1446119191937	Delete element
+1446122668329	Copy compilation unit
+1446122688974	Copy compilation unit
+1446122719783	Rename type 'BasicArmorUpgradeLevel'
+1446122723540	Rename type 'ArmorUpgradeLevel'
+1446122754662	Rename type 'UpgradeLevel'
+1446122767329	Rename type 'BasicArmorUpgrade'
+1446122789273	Rename type 'BasicUpgradeArmor'
+1446126241240	Move compilation unit
+1446126254863	Delete element
+1446126329315	Copy compilation unit
+1446126333430	Delete element
+1446126753505	Delete element
+1446138385474	Delete element
+1446141942282	Copy compilation unit
+1446141947876	Delete element
+1446158305952	Delete element
+1446158341084	Delete element
+1446159134420	Rename type 'GuiOpenPacket'
+1446159666530	Delete elements
+1446163335815	Copy compilation unit
+1446163445360	Rename compilation unit 'ItemStackChangeMessage.java'
+1446214086585	Rename type 'SyncItemStackMessage'
+1446214101490	Copy compilation unit
+1446214193499	Delete element
+1446214201244	Rename type 'SyncItemStackServerMessage'
+1446215856637	Rename type 'SyncItemStackMessage'
+1446219953930	Delete element
+1446221408461	Rename resource 'EnergyStorage - Kopie.png'

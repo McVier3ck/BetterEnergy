@@ -1,0 +1,69 @@
+package tk.mcvier3ck.moreenergy.gui;
+
+import org.lwjgl.opengl.GL11;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.ResourceLocation;
+import tk.mcvier3ck.moreenergy.container.ArmorContainer;
+
+public class GuiArmor extends GuiContainer {
+
+	private final ResourceLocation res = new ResourceLocation("MoreEnergy:/textures/gui/Armor.png");
+
+	private EntityPlayer palyer;
+	private ArmorContainer container;
+	public int level;
+	
+	public GuiArmor(InventoryPlayer inv, ArmorContainer container) {
+		super(container);
+		this.container = container;
+		this.xSize = 176;
+		this.ySize = 187;
+	}
+
+	@Override
+	protected void drawGuiContainerForegroundLayer(int x, int y) {
+		Minecraft.getMinecraft().getTextureManager().bindTexture(res);
+		
+		
+	}
+
+	@Override
+	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
+		GL11.glColor4f(1F, 1F, 1F, 1F);
+
+		Minecraft.getMinecraft().getTextureManager().bindTexture(res);
+		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		
+		if(container.armor.slots[0] != null){
+			Item item = container.armor.slots[0].getItem();
+			if(item == ItemRegistry.ArmorUpgrade1) {
+				drawTexturedModalRect(guiLeft+43, guiTop+15, 178, 0, 18, 18);
+				
+				level = 1;
+			}
+			if(item == ItemRegistry.ArmorUpgrade2){
+				drawTexturedModalRect(guiLeft+43, guiTop+15, 178, 0, 18, 18);
+				drawTexturedModalRect(guiLeft+79, guiTop+15, 178, 0, 18, 18);
+				
+				level = 2;
+			}
+			if(item == ItemRegistry.ArmorUpgrade3){
+				drawTexturedModalRect(guiLeft+3, guiTop+15, 178, 0, 18, 18);
+				drawTexturedModalRect(guiLeft+79, guiTop+15, 178, 0, 18, 18);
+				drawTexturedModalRect(guiLeft+115, guiTop+15, 178, 0, 18, 18);
+				
+				level = 3;
+				System.out.println("/");
+			}
+			
+		} else {
+			level = 0;
+		}
+
+	}
+
+}

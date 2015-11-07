@@ -1,0 +1,59 @@
+tile.EnergyStorage.name=Energy Storage
+tile.EnergyInfuser.name=Energy Infuser
+
+
+tile.RedOre.name=Red Energy Ore
+tile.BlueOre.name=Blue Energy Ore
+tile.GreenOre.name=Green Energy Ore
+tile.YellowOre.name=Yellow Energy Ore
+tile.MachineBlock.name=MachineBlock
+
+
+
+item.RedEnergyDiamond.name=Red Energy Diamond
+item.RedEnergyIngot.name=Red Energy Ingot
+item.RedEnergyShard.name=Red Energy Shard
+
+item.BlueEnergyDiamond.name=Blue Energy Diamond
+item.BlueEnergyIngot.name=Blue Energy Ingot
+item.BlueEnergyShard.name=Blue Energy Shard
+
+item.GreenEnergyDiamond.name=Green Energy Diamond
+item.GreenEnergyIngot.name=Green Energy Ingot
+item.GreenEnergyShard.name=Green Energy Shard
+
+item.YellowEnergyDiamond.name=Yellow Energy Diamond
+item.YellowEnergyIngot.name=Yellow Energy Ingot
+item.YellowEnergyShard.name=Yellow Energy Shard
+
+
+
+item.RedHelmet.name=Red Energy Helmet
+item.RedChestplate.name=Red Energy Chestplate
+item.RedLeggings.name=Red Energy Leggings
+item.RedBoots.name=Red Energy Boots
+
+item.BlueHelmet.name=Blue Energy Helmet
+item.BlueChestplate.name=Blue Energy Chestplate
+item.BlueLeggings.name=Blue Energy Leggings
+item.BlueBoots.name=Blue Energy Boots
+
+item.GreenHelmet.name=Green Energy Helmet
+item.GreenChestplate.name=Green Energy Chestplate
+item.GreenLeggings.name=Green Energy Leggings
+item.GreenBoots.name=Green Energy Boots
+
+item.YellowHelmet.name=Yellow Energy Helmet
+item.YellowChestplate.name=Yellow Energy Chestplate
+item.YellowLeggings.name=Yellow Energy Leggings
+item.YellowBoots.name=Yellow Energy Boots
+
+
+
+
+item.EmptyCrystal.name=EmptyCrystal
+item.SpeedCrystal.name=SpeedCrystal
+item.NightVisionCrystal.name=NightVisionCrystal
+item.ArmorUpgrade1.name=Armor Upgrade Tier1
+item.ArmorUpgrade2.name=Armor Upgrade Tier2
+item.ArmorUpgrade3.name=Armor Upgrade Tier3

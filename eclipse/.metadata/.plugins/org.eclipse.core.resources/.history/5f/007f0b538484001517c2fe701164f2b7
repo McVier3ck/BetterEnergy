@@ -1,0 +1,5 @@
+package tk.mcvier3ck.moreenergy.tileentity.machine;
+
+public class BasicTileEntityMachine {
+
+}

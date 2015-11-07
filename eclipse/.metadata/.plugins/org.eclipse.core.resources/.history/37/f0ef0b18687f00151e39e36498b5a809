@@ -1,0 +1,59 @@
+package tk.mcvier3ck.moreenergy.inventory;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+
+public class InventoryHelper {
+	
+	public static void writeNBT(ItemStack stack, NBTTagCompound nbt){
+		stack.setTagCompound(nbt);
+		
+	}
+	
+	public static NBTTagCompound readNBT(ItemStack stack){
+		if (stack.getTagCompound() == null) stack.setTagCompound(new NBTTagCompound());
+		return stack.getTagCompound();
+	}
+	
+	public static NBTTagCompound readInventory(ItemStack[] invetory){
+		NBTTagCompound nbt = new NBTTagCompound();
+		NBTTagList nbttaglist = new NBTTagList();
+
+		for (int i = 0; i < invetory.length; ++i) {
+			if (invetory[i] != null) {
+				NBTTagCompound nbttagcompound1 = new NBTTagCompound();
+				nbttagcompound1.setByte("Slot", (byte) i);
+				invetory[i].writeToNBT(nbttagcompound1);
+				nbttaglist.appendTag(nbttagcompound1);
+			} else {
+				NBTTagCompound nbttagcompound1 = new NBTTagCompound();
+				nbttagcompound1.setByte("Slot", (byte) i);
+				nbttaglist.appendTag(nbttagcompound1);
+			}
+		}
+		nbt.setTag("Items", nbttaglist);
+		return nbt;
+	}
+	
+	public static ItemStack[] writeInventory(ItemStack[] inventory, NBTTagCompound nbt){
+		NBTTagList nbttaglist =  nbt.getTagList("Items", 10);
+		ItemStack[] newInventory = new ItemStack[inventory.length];
+		if(nbttaglist != null){
+			for (int i = 0; i < nbttaglist.tagCount(); ++i) {
+				NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
+				byte b0 = nbttagcompound1.getByte("Slot");
+
+				if (b0 >= 0 && b0 < newInventory.length) {
+					newInventory[b0] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
+				}
+			}		
+		}
+		return newInventory;
+	}
+	
+	
+	
+	
+	
+}
